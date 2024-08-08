@@ -1,4 +1,4 @@
-namespace UAER.Models
+namespace UAER.Modelos.ViewModels
 {
     public class ErrorViewModel
     {

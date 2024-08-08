@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using UAER.Models;
+using UAER.Modelos.ViewModels;
 
-namespace UAER.Controllers
+namespace UAER.Areas.Usuario.Controllers
 {
+    [Area("Usuario")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
