@@ -12,6 +12,11 @@ namespace UAER.AccesoDatos.Repositorio.IRepositorio
         IAreasSRepositorio AreasS { get; }
         IEspacioRepositorio Espacio { get; }
         IMantenimientoRepositorio Mantenimiento { get; }
+
+        ISolicitarEspacioRepositorio SolicitarEspacio { get; }
+        ISolicitarMantenimientoRepositorio SolicitarMantenimiento { get; }
+
+        IUsuarioAplicacionRepositorio UsuarioAplicacion { get; }
         Task Guardar();
 
     }

@@ -1,0 +1,136 @@
+﻿@model UAER.Modelos.ViewModels.SolicitarEspacioVM
+@using UAER.Utilidades
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var titulo = "Crear nueva Solicitud de Espacio";
+}
+
+<form method="post" enctype="multipart/form-data">
+    @if(Model.SolicitarEspacio.Id !=0)
+    {
+        titulo = "Editar Solicitud";
+        <input asp-for="SolicitarEspacio.Id" hidden/>
+        <!--<input asp-for="Producto.ImagenUrl" hidden/>-->
+    }
+
+    <div class="border p-3">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+            <h2 class="text-info">@titulo</h2>
+        </div>
+
+        <div class="row">
+            <div class="col-8">
+                <div class="container">
+
+
+                    <!--Lista Areas del solicitante-->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Area del solicitante</label>
+                            <select asp-for="SolicitarEspacio.AreasSId" asp-items="@Model.AreasSLista" class="form-select">
+                                <option disabled selected>--Selecciona la area del solicitante--</option>
+                            </select>
+                            <span asp-validation-for="SolicitarEspacio.AreasSId" class="text-danger"></span>
+                        </div>
+                    </div>
+
+
+
+
+
+                    <!--Nombre del solicitante-->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Nombre del solicitante</label>
+                            <input asp-for="SolicitarEspacio.NombreSolicitante" class="form-control" />
+                            <span asp-validation-for="SolicitarEspacio.NombreSolicitante" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <!--Lista del espacio fisico solicitado-->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Espacio fisico solicitado</label>
+                            <select asp-for="SolicitarEspacio.EspacioId" asp-items="@Model.EspacioLista" class="form-select">
+                                <option disabled selected>--Selecciona el espacio fisico solicitado--</option>
+                            </select>
+                            <span asp-validation-for="SolicitarEspacio.EspacioId" class="text-danger"></span>
+                        </div>
+                    </div>
+
+
+                    <!--Campo Fecha solicitada-->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Fecha que solicita</label>
+                            <input asp-for="SolicitarEspacio.FechaSolicitud" class="form-control" type="date" />
+                            <span asp-validation-for="SolicitarEspacio.FechaSolicitud" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <!--Campo Hora solicitada-->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Hora que se solicita</label>
+                            <input asp-for="SolicitarEspacio.HoraSolicitud" class="form-control" />
+                            <span asp-validation-for="SolicitarEspacio.HoraSolicitud" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                   
+
+                    <!--Estado-->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Estado</label>
+                            <select asp-for="SolicitarEspacio.Estado" class="form-select">
+                                <option value="true">Autorizado</option>
+                                <option value="false">En revisión</option>
+                            </select>
+                            <span asp-validation-for="SolicitarEspacio.Estado" class="text-danger"></span>
+                        </div>
+                    </div>
+
+
+
+
+                    <!--Botones-->
+                    <br />
+                    <div class="d-grid gap-2 d-md-block">
+                        @if (Model.SolicitarEspacio.Id != 0)
+                        {
+                            <partial name="_botonesActualizarYRegresar" model="Model.SolicitarEspacio.Id" />
+                        }
+                        else
+                        {
+                            <button type="submit" onclick="return validarImagen()" class="btn btn-success">
+                                <i class="bi bi-plus-square-fill"></i>
+                                Crear
+                                
+                            </button>
+                            <a class="btn btn-success" asp-action="Index">
+                                <i class="bi bi-arrow-return-left"></i>
+                                Regresar
+                            </a>
+                        }
+                    </div>
+
+                </div>
+
+            </div>
+
+            
+        </div>
+
+    </div>
+
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+   
+}
+
+

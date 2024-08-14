@@ -1,0 +1,154 @@
+﻿@model UAER.Modelos.ViewModels.SolicitarMantenimientoVM
+@using UAER.Utilidades
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var titulo = "Crear nueva Solicitud de Mantenimiento";
+}
+
+<form method="post" enctype="multipart/form-data">
+    @if (Model.SolicitarMantenimiento.Id != 0)
+    {
+        titulo = "Editar Solicitud";
+        <input asp-for="SolicitarMantenimiento.Id" hidden />
+        <!--<input asp-for="Producto.ImagenUrl" hidden/>-->
+    }
+
+    <div class="border p-3">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+            <h2 class="text-info">@titulo</h2>
+        </div>
+
+        <div class="row">
+            <div class="col-8">
+                <div class="container">
+
+
+                    <!--Lista Areas del solicitante-->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Area del solicitante</label>
+                            <select asp-for="SolicitarMantenimiento.AreasSId" asp-items="@Model.AreasSLista" class="form-select">
+                                <option disabled selected>--Selecciona la area del solicitante--</option>
+                            </select>
+                            <span asp-validation-for="SolicitarMantenimiento.AreasSId" class="text-danger"></span>
+                        </div>
+                    </div>
+
+
+
+
+
+                    <!--Nombre del solicitante-->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Nombre del solicitante</label>
+                            <input asp-for="SolicitarMantenimiento.NombreSolicitante" class="form-control" />
+                            <span asp-validation-for="SolicitarMantenimiento.NombreSolicitante" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <!--Lista del Mantenimiento fisico solicitado-->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Mantenimiento solicitado</label>
+                            <select asp-for="SolicitarMantenimiento.MantenimientoId" asp-items="@Model.MantenimientoLista" class="form-select">
+                                <option disabled selected>--Selecciona el mantenimiento solicitado--</option>
+                            </select>
+                            <span asp-validation-for="SolicitarMantenimiento.MantenimientoId" class="text-danger"></span>
+                        </div>
+                    </div>
+
+
+                    <!--Campo Fecha solicitada-->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Fecha que solicita</label>
+                            <input asp-for="SolicitarMantenimiento.FechaSolicitud" class="form-control" type="date" />
+                            <span asp-validation-for="SolicitarMantenimiento.FechaSolicitud" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <!-- Campo descripcion -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Descripcion de lo que se realizara</label>
+                            <input asp-for="SolicitarMantenimiento.Descripcion" class="form-control" />
+                            <span asp-validation-for="SolicitarMantenimiento.Descripcion" class="text-danger"></span>
+                        </div>
+                    </div>
+
+
+                    <!--Campo Fecha Asiganda de Inicio-->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Fecha Asiganda de Inicio</label>
+                            <input asp-for="SolicitarMantenimiento.FechaAsignadaInicio" class="form-control" type="date" />
+                            <span asp-validation-for="SolicitarMantenimiento.FechaAsignadaInicio" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <!--Campo Fecha Asiganda de Final-->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Fecha Asiganda de Final</label>
+                            <input asp-for="SolicitarMantenimiento.FechaAsignadaFinal" class="form-control" type="date" />
+                            <span asp-validation-for="SolicitarMantenimiento.FechaAsignadaFinal" class="text-danger"></span>
+                        </div>
+                    </div>
+                   
+
+                    <!-- Estado -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Estado</label>
+                            <select asp-for="SolicitarMantenimiento.Estado" class="form-select">
+                                <option value="true">Autorizado</option>
+                                <option value="false">En revisión</option>
+                            </select>
+                            <span asp-validation-for="SolicitarMantenimiento.Estado" class="text-danger"></span>
+                        </div>
+                    </div>
+
+
+
+
+                    <!--Botones-->
+                    <br />
+                    <div class="d-grid gap-2 d-md-block">
+                        @if (Model.SolicitarMantenimiento.Id != 0)
+                        {
+                            <partial name="_botonesActualizarYRegresar" model="Model.SolicitarMantenimiento.Id" />
+                        }
+                        else
+                        {
+                            <button type="submit" onclick="return validarImagen()" class="btn btn-success">
+                                <i class="bi bi-plus-square-fill"></i>
+                                Crear
+                                
+                            </button>
+                            <a class="btn btn-success" asp-action="Index">
+                                <i class="bi bi-arrow-return-left"></i>
+                                Regresar
+                            </a>
+                        }
+                    </div>
+
+                </div>
+
+            </div>
+
+            
+        </div>
+
+    </div>
+
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+   
+}
+
+

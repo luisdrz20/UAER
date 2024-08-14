@@ -6,11 +6,26 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace UAER.AccesoDatos.Migrations
 {
     /// <inheritdoc />
-    public partial class AgregarMigracionInicial : Migration
+    public partial class adfs : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "AreasS",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nombre = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
+                    Descripcion = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Estado = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AreasS", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -48,6 +63,36 @@ namespace UAER.AccesoDatos.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Espacios",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nombre = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
+                    Descripcion = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Estado = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Espacios", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Mantenimientos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nombre = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
+                    Descripcion = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Estado = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Mantenimientos", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -156,6 +201,34 @@ namespace UAER.AccesoDatos.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "SolicitarEspacios",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NombreSolicitante = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Estado = table.Column<bool>(type: "bit", nullable: false),
+                    FechaSolicitud = table.Column<DateTime>(type: "date", nullable: false),
+                    HoraSolicitud = table.Column<TimeSpan>(type: "time", nullable: false),
+                    AreasSId = table.Column<int>(type: "int", nullable: false),
+                    EspacioId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SolicitarEspacios", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SolicitarEspacios_AreasS_AreasSId",
+                        column: x => x.AreasSId,
+                        principalTable: "AreasS",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_SolicitarEspacios_Espacios_EspacioId",
+                        column: x => x.EspacioId,
+                        principalTable: "Espacios",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -194,6 +267,16 @@ namespace UAER.AccesoDatos.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SolicitarEspacios_AreasSId",
+                table: "SolicitarEspacios",
+                column: "AreasSId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SolicitarEspacios_EspacioId",
+                table: "SolicitarEspacios",
+                column: "EspacioId");
         }
 
         /// <inheritdoc />
@@ -215,10 +298,22 @@ namespace UAER.AccesoDatos.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Mantenimientos");
+
+            migrationBuilder.DropTable(
+                name: "SolicitarEspacios");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "AreasS");
+
+            migrationBuilder.DropTable(
+                name: "Espacios");
         }
     }
 }

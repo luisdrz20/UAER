@@ -12,8 +12,8 @@ using UAER.AccesoDatos.Data;
 namespace UAER.AccesoDatos.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240808163942_AgregarEstadoMigracion")]
-    partial class AgregarEstadoMigracion
+    [Migration("20240813165405_AgregarMigracionSolicitarMantenimiento")]
+    partial class AgregarMigracionSolicitarMantenimiento
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -279,6 +279,113 @@ namespace UAER.AccesoDatos.Migrations
                     b.ToTable("Espacios");
                 });
 
+            modelBuilder.Entity("UAER.Modelos.Mantenimiento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("Estado")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Mantenimientos");
+                });
+
+            modelBuilder.Entity("UAER.Modelos.SolicitarEspacio", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AreasSId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EspacioId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Estado")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("FechaSolicitud")
+                        .HasColumnType("date");
+
+                    b.Property<TimeSpan>("HoraSolicitud")
+                        .HasColumnType("time");
+
+                    b.Property<string>("NombreSolicitante")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreasSId");
+
+                    b.HasIndex("EspacioId");
+
+                    b.ToTable("SolicitarEspacios");
+                });
+
+            modelBuilder.Entity("UAER.Modelos.SolicitarMantenimiento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AreasSId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Descripcion")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<bool>("Estado")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("FechaAsignadaFinal")
+                        .HasColumnType("date");
+
+                    b.Property<DateTime>("FechaAsignadaInicio")
+                        .HasColumnType("date");
+
+                    b.Property<DateTime>("FechaSolicitud")
+                        .HasColumnType("date");
+
+                    b.Property<int>("MantenimientoId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("NombreSolicitante")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreasSId");
+
+                    b.HasIndex("MantenimientoId");
+
+                    b.ToTable("SolicitarMantenimientos");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -328,6 +435,44 @@ namespace UAER.AccesoDatos.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("UAER.Modelos.SolicitarEspacio", b =>
+                {
+                    b.HasOne("UAER.Modelos.AreasS", "AreasS")
+                        .WithMany()
+                        .HasForeignKey("AreasSId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("UAER.Modelos.Espacio", "Espacio")
+                        .WithMany()
+                        .HasForeignKey("EspacioId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("AreasS");
+
+                    b.Navigation("Espacio");
+                });
+
+            modelBuilder.Entity("UAER.Modelos.SolicitarMantenimiento", b =>
+                {
+                    b.HasOne("UAER.Modelos.AreasS", "AreasS")
+                        .WithMany()
+                        .HasForeignKey("AreasSId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("UAER.Modelos.Mantenimiento", "Mantenimiento")
+                        .WithMany()
+                        .HasForeignKey("MantenimientoId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("AreasS");
+
+                    b.Navigation("Mantenimiento");
                 });
 #pragma warning restore 612, 618
         }
